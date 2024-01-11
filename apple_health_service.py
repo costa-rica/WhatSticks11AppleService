@@ -185,24 +185,24 @@ def call_api_notify_completion(user_id,count_of_records_added_to_db):
 
 
 
-def worker():
-    while True:
-        # Get the next task from the queue
-        user_id, time_stamp_str, add_qty_cat_bool, add_workouts_bool = job_queue.get()
-        try:
-            what_sticks_health_service(user_id, time_stamp_str, add_qty_cat_bool, add_workouts_bool)
-        finally:
-            # Signal task completion
-            job_queue.task_done()
+# def worker():
+#     while True:
+#         # Get the next task from the queue
+#         user_id, time_stamp_str, add_qty_cat_bool, add_workouts_bool = job_queue.get()
+#         try:
+#             what_sticks_health_service(user_id, time_stamp_str, add_qty_cat_bool, add_workouts_bool)
+#         finally:
+#             # Signal task completion
+#             job_queue.task_done()
 
-def add_job_to_queue(user_id, time_stamp_str, add_qty_cat_bool, add_workouts_bool):
-    job_queue.put((user_id, time_stamp_str, add_qty_cat_bool, add_workouts_bool))
+# def add_job_to_queue(user_id, time_stamp_str, add_qty_cat_bool, add_workouts_bool):
+#     job_queue.put((user_id, time_stamp_str, add_qty_cat_bool, add_workouts_bool))
 
-# Initialize and start worker threads
-for i in range(num_worker_threads):
-    t = threading.Thread(target=worker)
-    t.daemon = True  # Daemon threads will shut down when the main thread exits
-    t.start()
+# # Initialize and start worker threads
+# for i in range(num_worker_threads):
+#     t = threading.Thread(target=worker)
+#     t.daemon = True  # Daemon threads will shut down when the main thread exits
+#     t.start()
 
 # Example of adding a job to the queue
 # add_job_to_queue('user_id_example', 'time_stamp_str_example', 'True', 'True')
