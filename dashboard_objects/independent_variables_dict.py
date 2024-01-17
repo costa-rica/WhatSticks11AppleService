@@ -1,9 +1,10 @@
 import pandas as pd
 from ws_analysis import create_user_qty_cat_df, corr_sleep_steps, corr_sleep_heart_rate, \
     create_user_workouts_df, corr_sleep_workouts, corr_workouts_sleep, \
-    create_df_daily_workout_duration, corr_workouts_steps
+    create_df_daily_workout_duration, corr_workouts_steps, corr_sleep_workout_dummies
 from common.config_and_logger import config, logger_apple
 import os
+import numpy as np
 
 def user_sleep_time_correlations(user_id, timezone_str):
     logger_apple.info("- in user_sleep_time_correlations ")
@@ -48,9 +49,35 @@ def user_sleep_time_correlations(user_id, timezone_str):
         arryIndepVarObjects_dict["definition"]= "The avearge of daily duration recorded by all your devices and apps that share with Apple Health"
         arryIndepVarObjects_dict["noun"]= "avearge daily minutes worked out"
         list_of_arryIndepVarObjects_dict.append(arryIndepVarObjects_dict)
-        # logger_apple.info("- list_of_arryIndepVarObjects_dict -")
-        # logger_apple.info(list_of_arryIndepVarObjects_dict)
-        # logger_apple.info("------------------------------------")
+
+        # Workout duration dummies
+        if len(df_workouts) > 5:
+            col_names_and_correlations_tuple_list, obs_count = corr_sleep_workout_dummies(df_qty_cat, df_workouts)
+
+            if col_names_and_correlations_tuple_list != "insufficient data":
+                # Filter out tuples with NaN values
+                filtered_list = [t for t in col_names_and_correlations_tuple_list if not np.isnan(t[1])]
+
+                # Find the tuple with the largest absolute correlation value
+                largest_correlation_tuple = max(filtered_list, key=lambda x: abs(x[1]), default=None)
+
+                upper_value_string = largest_correlation_tuple[0][len("dur_"):-len("_dummy")]
+                lower_value_string = int(upper_value_string)-10
+                indep_var_name = f"Workouts of {lower_value_string} to {upper_value_string} minutes"
+
+                arryIndepVarObjects_dict = {}
+                arryIndepVarObjects_dict["independentVarName"]= indep_var_name
+                arryIndepVarObjects_dict["forDepVarName"]= "Sleep Time"
+                # correlation_value, obs_count = corr_sleep_workouts(df_qty_cat, df_workouts)
+                correlation_value, obs_count = largest_correlation_tuple[1], obs_count
+                arryIndepVarObjects_dict["correlationValue"]= correlation_value
+                arryIndepVarObjects_dict["correlationObservationCount"]= obs_count
+                
+                arryIndepVarObjects_dict["definition"]= f"Workouts that last between {lower_value_string} and {upper_value_string} minutes"
+                arryIndepVarObjects_dict["noun"]= f"workouts between {int(upper_value_string)-10} and {upper_value_string} minutes"
+                list_of_arryIndepVarObjects_dict.append(arryIndepVarObjects_dict)
+
+
 
     return list_of_arryIndepVarObjects_dict
 
