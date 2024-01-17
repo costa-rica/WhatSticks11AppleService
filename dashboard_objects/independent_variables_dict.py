@@ -1,7 +1,7 @@
 import pandas as pd
 from ws_analysis import create_user_qty_cat_df, corr_sleep_steps, corr_sleep_heart_rate, \
     create_user_workouts_df, corr_sleep_workouts, corr_workouts_sleep, \
-    create_df_daily_workout_duration
+    create_df_daily_workout_duration, corr_workouts_steps
 from common.config_and_logger import config, logger_apple
 import os
 
@@ -71,5 +71,35 @@ def user_workouts_duration_correlations(user_id,user_tz_str):
             arryIndepVarObjects_dict["definition"]= "The number of hours slept in the previous night"
             arryIndepVarObjects_dict["noun"]= "hours of sleep the night before"
             list_of_arryIndepVarObjects_dict.append(arryIndepVarObjects_dict)
+
+        # if 'HKCategoryTypeIdentifierSleepAnalysis' in sampleTypeListQtyCat:
+            
+        # Steps
+        if 'HKQuantityTypeIdentifierStepCount' in sampleTypeListQtyCat:
+            arryIndepVarObjects_dict = {}
+            arryIndepVarObjects_dict["independentVarName"]= "Step Count"
+            arryIndepVarObjects_dict["forDepVarName"]= "Workout Duration"
+            # correlation_value, obs_count = corr_sleep_steps(df_qty_cat)
+            correlation_value, obs_count = corr_workouts_steps(df_workouts, df_qty_cat)
+            arryIndepVarObjects_dict["correlationValue"]= correlation_value
+            arryIndepVarObjects_dict["correlationObservationCount"]= obs_count
+            arryIndepVarObjects_dict["definition"]= "The count of your daily steps the previous day"
+            arryIndepVarObjects_dict["noun"]= "daily step count"
+            list_of_arryIndepVarObjects_dict.append(arryIndepVarObjects_dict)
+
+        # Heart Rate
+        if 'HKQuantityTypeIdentifierHeartRate' in sampleTypeListQtyCat:
+            arryIndepVarObjects_dict = {}
+            arryIndepVarObjects_dict["independentVarName"]= "Heart Rate Avg"
+            arryIndepVarObjects_dict["forDepVarName"]= "Workout Duration"
+            # correlation_value, obs_count = corr_sleep_heart_rate(df_qty_cat)
+            correlation_value, obs_count = corr_sleep_heart_rate(df_qty_cat)# <--- this changes
+            arryIndepVarObjects_dict["correlationValue"]= correlation_value
+            arryIndepVarObjects_dict["correlationObservationCount"]= obs_count
+            arryIndepVarObjects_dict["definition"]= "The avearge of heart rates, from the prior day, recoreded across all your devices"
+            arryIndepVarObjects_dict["noun"]= "daily average heart rate"
+            list_of_arryIndepVarObjects_dict.append(arryIndepVarObjects_dict)
+
+
     return list_of_arryIndepVarObjects_dict
 
