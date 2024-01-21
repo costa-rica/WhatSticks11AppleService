@@ -92,47 +92,20 @@ def create_dashboard_table_object_json_file(user_id):
     array_dashboard_table_object = []
 
     ############# CREATE sleep_time dashbaord object ############################
-    # keys to dashboard_table_object must match WSiOS DashboardTableObject
-    dashboard_table_object = sleep_time()
+
 
     # keys to indep_var_object must match WSiOS IndepVarObject
     list_of_dictIndepVarObjects = user_sleep_time_correlations(user_id = user_id,timezone_str=timezone_str)# new
-    arry_indep_var_objects = []
+    if len(list_of_dictIndepVarObjects) > 0:
+        
+        # keys to dashboard_table_object must match WSiOS DashboardTableObject
+        dashboard_table_object = sleep_time()
+        arry_indep_var_objects = []
 
-    for dictIndepVarObjects in list_of_dictIndepVarObjects:
-        if dictIndepVarObjects.get('correlationValue') != "insufficient data":
-            logger_apple.info(f"- {dictIndepVarObjects.get('name')} (indep var) correlation with {dictIndepVarObjects.get('depVarName')} (dep var): {dictIndepVarObjects.get('correlationValue')} -")
-            arry_indep_var_objects.append(dictIndepVarObjects)
-
-    # Sorting (biggest to smallest) the list by the absolute value of correlationValue
-    sorted_arry_indep_var_objects = sorted(arry_indep_var_objects, key=lambda x: abs(x['correlationValue']), reverse=True)
-
-    # Converting correlationValue to string without losing precision
-    for item in sorted_arry_indep_var_objects:
-        item['correlationValue'] = str(item['correlationValue'])
-        item['correlationObservationCount'] = str(item['correlationObservationCount'])
-
-    dashboard_table_object['arryIndepVarObjects'] = sorted_arry_indep_var_objects
-    array_dashboard_table_object.append(dashboard_table_object)
-    ############# END CREATE sleep_time dashbaord object ############################
-
-    
-
-
-    ############# START CREATE workouts_duration (Exercise Time) dashbaord object ############################
-    # keys to dashboard_table_object must match WSiOS DashboardTableObject
-    dashboard_table_object = workouts_duration()
-
-    # keys to indep_var_object must match WSiOS IndepVarObject
-    list_of_dictIndepVarObjects = user_workouts_duration_correlations(user_id,timezone_str)# new
-    arry_indep_var_objects = []
-
-    if list_of_dictIndepVarObjects != None:
         for dictIndepVarObjects in list_of_dictIndepVarObjects:
             if dictIndepVarObjects.get('correlationValue') != "insufficient data":
                 logger_apple.info(f"- {dictIndepVarObjects.get('name')} (indep var) correlation with {dictIndepVarObjects.get('depVarName')} (dep var): {dictIndepVarObjects.get('correlationValue')} -")
                 arry_indep_var_objects.append(dictIndepVarObjects)
-
 
         # Sorting (biggest to smallest) the list by the absolute value of correlationValue
         sorted_arry_indep_var_objects = sorted(arry_indep_var_objects, key=lambda x: abs(x['correlationValue']), reverse=True)
@@ -144,24 +117,60 @@ def create_dashboard_table_object_json_file(user_id):
 
         dashboard_table_object['arryIndepVarObjects'] = sorted_arry_indep_var_objects
         array_dashboard_table_object.append(dashboard_table_object)
+    ############# END CREATE sleep_time dashbaord object ############################
+
+    
+
+
+    ############# START CREATE workouts_duration (Exercise Time) dashbaord object ############################
+
+
+    # keys to indep_var_object must match WSiOS IndepVarObject
+    list_of_dictIndepVarObjects = user_workouts_duration_correlations(user_id,timezone_str)# new
+    if len(list_of_dictIndepVarObjects) > 0:
+        # keys to dashboard_table_object must match WSiOS DashboardTableObject
+        dashboard_table_object = workouts_duration()
+        arry_indep_var_objects = []
+
+        if list_of_dictIndepVarObjects != None:
+            for dictIndepVarObjects in list_of_dictIndepVarObjects:
+                if dictIndepVarObjects.get('correlationValue') != "insufficient data":
+                    logger_apple.info(f"- {dictIndepVarObjects.get('name')} (indep var) correlation with {dictIndepVarObjects.get('depVarName')} (dep var): {dictIndepVarObjects.get('correlationValue')} -")
+                    arry_indep_var_objects.append(dictIndepVarObjects)
+
+
+            # Sorting (biggest to smallest) the list by the absolute value of correlationValue
+            sorted_arry_indep_var_objects = sorted(arry_indep_var_objects, key=lambda x: abs(x['correlationValue']), reverse=True)
+
+            # Converting correlationValue to string without losing precision
+            for item in sorted_arry_indep_var_objects:
+                item['correlationValue'] = str(item['correlationValue'])
+                item['correlationObservationCount'] = str(item['correlationObservationCount'])
+
+            dashboard_table_object['arryIndepVarObjects'] = sorted_arry_indep_var_objects
+            array_dashboard_table_object.append(dashboard_table_object)
     ############# END CREATE workouts_duration dashbaord object ############################
 
     
 
+    if len(array_dashboard_table_object) > 0:
+        # new file name:
+        # note: since user_id is string the code below needs convert back to int to use this `:04` shorthand
+        # user_sleep_dash_json_file_name = f"dt_sleep01_{int(user_id):04}.json"
+        user_data_table_array_json_file_name = f"data_table_objects_array_{int(user_id):04}.json"
 
-    # new file name:
-    # note: since user_id is string the code below needs convert back to int to use this `:04` shorthand
-    # user_sleep_dash_json_file_name = f"dt_sleep01_{int(user_id):04}.json"
-    user_data_table_array_json_file_name = f"data_table_objects_array_{int(user_id):04}.json"
+        # json_data_path_and_name = os.path.join(config.DASHBOARD_FILES_DIR, user_sleep_dash_json_file_name)
+        json_data_path_and_name = os.path.join(config.DASHBOARD_FILES_DIR, user_data_table_array_json_file_name)
+        print(f"Writing file name: {json_data_path_and_name}")
+        with open(json_data_path_and_name, 'w') as file:
+            json.dump(array_dashboard_table_object, file)
+        
 
-    # json_data_path_and_name = os.path.join(config.DASHBOARD_FILES_DIR, user_sleep_dash_json_file_name)
-    json_data_path_and_name = os.path.join(config.DASHBOARD_FILES_DIR, user_data_table_array_json_file_name)
-    print(f"Writing file name: {json_data_path_and_name}")
-    with open(json_data_path_and_name, 'w') as file:
-        json.dump(array_dashboard_table_object, file)
-    
-    logger_apple.info(f"- WSAS COMPLETED dashboard file for user: {user_id} -")
-    logger_apple.info(f"- WSAS COMPLETED dashboard file path: {json_data_path_and_name} -")
+        logger_apple.info(f"- WSAS COMPLETED dashboard file for user: {user_id} -")
+        logger_apple.info(f"- WSAS COMPLETED dashboard file path: {json_data_path_and_name} -")
+    else:
+        logger_apple.info(f"- WSAS COMPLETED dashboard file for user: {user_id} -- -")
+        logger_apple.info(f"- WSAS COMPLETED - NOT enough - dashboard data to produce a file for this user -")
 
 
 
