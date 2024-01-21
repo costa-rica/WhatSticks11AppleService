@@ -12,7 +12,7 @@ from common.utilities import apple_health_qty_cat_json_filename, \
     apple_health_workouts_json_filename, create_pickle_apple_qty_cat_path_and_name, \
     create_pickle_apple_workouts_path_and_name
 from dashboard_objects.data_source_obj import create_data_source_object_json_file
-from dashboard_objects.dependent_variables_dict import sleep_time, excercise_time
+from dashboard_objects.dependent_variables_dict import sleep_time, workouts_duration
 from dashboard_objects.independent_variables_dict import user_sleep_time_correlations, \
     user_workouts_duration_correlations
 from add_data_to_db.apple_health_quantity_category import \
@@ -64,11 +64,12 @@ def what_sticks_health_service(user_id, time_stamp_str, add_qty_cat_bool, add_wo
     count_of_qty_cat_records_added_to_db = 0
     count_of_workout_records_to_db = 0
 
-    if add_qty_cat_bool:
+    if add_qty_cat_bool and os.path.exists(os.path.join(config.APPLE_HEALTH_DIR, apple_health_qty_cat_json_file_name)):
         logger_apple.info(f"- Adding Apple Health Quantity Category Data -")
         count_of_qty_cat_records_added_to_db = add_apple_health_to_database(user_id, apple_health_qty_cat_json_file_name, 
                                             df_existing_qty_cat, pickle_apple_qty_cat_path_and_name)
-    if add_workouts_bool:
+
+    if add_workouts_bool and os.path.exists(os.path.join(config.APPLE_HEALTH_DIR, apple_health_workouts_json_file_name)):
         logger_apple.info(f"- Adding Apple Health Workouts Data -")
         count_of_workout_records_to_db = add_apple_workouts_to_database(user_id,apple_health_workouts_json_file_name,
                                             df_existing_workouts,pickle_apple_workouts_path_and_name)
@@ -112,37 +113,40 @@ def create_dashboard_table_object_json_file(user_id):
         item['correlationObservationCount'] = str(item['correlationObservationCount'])
 
     dashboard_table_object['arryIndepVarObjects'] = sorted_arry_indep_var_objects
+    array_dashboard_table_object.append(dashboard_table_object)
     ############# END CREATE sleep_time dashbaord object ############################
 
-    array_dashboard_table_object.append(dashboard_table_object)
+    
 
 
-    ############# START CREATE excercise_time dashbaord object ############################
+    ############# START CREATE workouts_duration (Exercise Time) dashbaord object ############################
     # keys to dashboard_table_object must match WSiOS DashboardTableObject
-    dashboard_table_object = excercise_time()
+    dashboard_table_object = workouts_duration()
 
     # keys to indep_var_object must match WSiOS IndepVarObject
     list_of_dictIndepVarObjects = user_workouts_duration_correlations(user_id,timezone_str)# new
     arry_indep_var_objects = []
 
-    for dictIndepVarObjects in list_of_dictIndepVarObjects:
-        if dictIndepVarObjects.get('correlationValue') != "insufficient data":
-            logger_apple.info(f"- {dictIndepVarObjects.get('name')} (indep var) correlation with {dictIndepVarObjects.get('depVarName')} (dep var): {dictIndepVarObjects.get('correlationValue')} -")
-            arry_indep_var_objects.append(dictIndepVarObjects)
+    if list_of_dictIndepVarObjects != None:
+        for dictIndepVarObjects in list_of_dictIndepVarObjects:
+            if dictIndepVarObjects.get('correlationValue') != "insufficient data":
+                logger_apple.info(f"- {dictIndepVarObjects.get('name')} (indep var) correlation with {dictIndepVarObjects.get('depVarName')} (dep var): {dictIndepVarObjects.get('correlationValue')} -")
+                arry_indep_var_objects.append(dictIndepVarObjects)
 
 
-    # Sorting (biggest to smallest) the list by the absolute value of correlationValue
-    sorted_arry_indep_var_objects = sorted(arry_indep_var_objects, key=lambda x: abs(x['correlationValue']), reverse=True)
+        # Sorting (biggest to smallest) the list by the absolute value of correlationValue
+        sorted_arry_indep_var_objects = sorted(arry_indep_var_objects, key=lambda x: abs(x['correlationValue']), reverse=True)
 
-    # Converting correlationValue to string without losing precision
-    for item in sorted_arry_indep_var_objects:
-        item['correlationValue'] = str(item['correlationValue'])
-        item['correlationObservationCount'] = str(item['correlationObservationCount'])
+        # Converting correlationValue to string without losing precision
+        for item in sorted_arry_indep_var_objects:
+            item['correlationValue'] = str(item['correlationValue'])
+            item['correlationObservationCount'] = str(item['correlationObservationCount'])
 
-    dashboard_table_object['arryIndepVarObjects'] = sorted_arry_indep_var_objects
-    ############# END CREATE excercise_time dashbaord object ############################
+        dashboard_table_object['arryIndepVarObjects'] = sorted_arry_indep_var_objects
+        array_dashboard_table_object.append(dashboard_table_object)
+    ############# END CREATE workouts_duration dashbaord object ############################
 
-    array_dashboard_table_object.append(dashboard_table_object)
+    
 
 
     # new file name:

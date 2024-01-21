@@ -46,7 +46,10 @@ def get_apple_health_count_date(user_id):
     pickle_data_path_and_name_qty_cat = os.path.join(config.DATAFRAME_FILES_DIR, user_apple_qty_cat_dataframe_pickle_file_name)
     pickle_data_path_and_name_workouts = os.path.join(config.DATAFRAME_FILES_DIR, user_apple_workouts_dataframe_pickle_file_name)
     df_apple_qty_cat = pd.read_pickle(pickle_data_path_and_name_qty_cat)
-    df_apple_workouts = pd.read_pickle(pickle_data_path_and_name_workouts)
+    if os.path.exists(pickle_data_path_and_name_workouts):
+        df_apple_workouts = pd.read_pickle(pickle_data_path_and_name_workouts)
+    else:
+        df_apple_workouts = pd.DataFrame()
 
     # get count of qty_cat and workouts
     apple_health_record_count = "{:,}".format(len(df_apple_qty_cat) + len(df_apple_workouts))
@@ -55,16 +58,16 @@ def get_apple_health_count_date(user_id):
     df_apple_qty_cat['startDate'] = pd.to_datetime(df_apple_qty_cat['startDate'])
     earliest_date_qty_cat = df_apple_qty_cat['startDate'].min()
 
+    if not os.path.exists(pickle_data_path_and_name_workouts):
+        earliest_date_str = earliest_date_qty_cat.strftime('%b %d, %Y')
+        return apple_health_record_count, earliest_date_str
+
     df_apple_workouts['startDate'] = pd.to_datetime(df_apple_workouts['startDate'])
     earliest_date_workouts = df_apple_workouts['startDate'].min()
     earliest_date_str = ""
     if earliest_date_workouts < earliest_date_qty_cat:
-        # formatted_date_workouts = earliest_date_workouts.strftime('%b %d, %Y')
-        # print(f"workouts are older: {formatted_date_workouts}")
         earliest_date_str = earliest_date_workouts.strftime('%b %d, %Y')
     else:
-        # formatted_date_qty_cat = earliest_date_qty_cat.strftime('%b %d, %Y')
-        # print(f"qty_cat are older: {formatted_date_qty_cat}")
         earliest_date_str = earliest_date_qty_cat.strftime('%b %d, %Y')
 
     return apple_health_record_count, earliest_date_str
