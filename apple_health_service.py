@@ -96,7 +96,10 @@ def create_dashboard_table_object_json_file(user_id):
 
     # keys to indep_var_object must match WSiOS IndepVarObject
     list_of_dictIndepVarObjects = user_sleep_time_correlations(user_id = user_id,timezone_str=timezone_str)# new
-    if len(list_of_dictIndepVarObjects) > 0:
+    logger_apple.info(f"****** SLEEP TIME ************")
+    logger_apple.info(f"- {list_of_dictIndepVarObjects} -")
+    
+    if len(list_of_dictIndepVarObjects) > 0:# This is useless remove <------ *** REMOVE
         
         # keys to dashboard_table_object must match WSiOS DashboardTableObject
         dashboard_table_object = sleep_time()
@@ -127,7 +130,7 @@ def create_dashboard_table_object_json_file(user_id):
 
     # keys to indep_var_object must match WSiOS IndepVarObject
     list_of_dictIndepVarObjects = user_workouts_duration_correlations(user_id,timezone_str)# new
-    if len(list_of_dictIndepVarObjects) > 0:
+    if len(list_of_dictIndepVarObjects) > 0:# This is useless remove <------ *** REMOVE
         # keys to dashboard_table_object must match WSiOS DashboardTableObject
         dashboard_table_object = workouts_duration()
         arry_indep_var_objects = []

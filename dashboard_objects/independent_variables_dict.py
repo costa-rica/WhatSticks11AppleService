@@ -24,6 +24,7 @@ def user_sleep_time_correlations(user_id, timezone_str):
                 arryIndepVarObjects_dict["definition"]= "The count of your daily steps"
                 arryIndepVarObjects_dict["noun"]= "daily step count"
                 list_of_arryIndepVarObjects_dict.append(arryIndepVarObjects_dict)
+                flag_data_for_dashboard_exisits=True
 
             # Heart Rate
             if 'HKQuantityTypeIdentifierHeartRate' in sampleTypeListQtyCat:
@@ -33,7 +34,7 @@ def user_sleep_time_correlations(user_id, timezone_str):
                 correlation_value, obs_count = corr_sleep_heart_rate(df_qty_cat)
                 arryIndepVarObjects_dict["correlationValue"]= correlation_value
                 arryIndepVarObjects_dict["correlationObservationCount"]= obs_count
-                arryIndepVarObjects_dict["definition"]= "The avearge of heart rates recoreded across all your devices"
+                arryIndepVarObjects_dict["definition"]= "The avearge of heart rates recorded across all your devices"
                 arryIndepVarObjects_dict["noun"]= "daily average heart rate"
                 list_of_arryIndepVarObjects_dict.append(arryIndepVarObjects_dict)
 
@@ -78,9 +79,15 @@ def user_sleep_time_correlations(user_id, timezone_str):
                     arryIndepVarObjects_dict["noun"]= f"workouts between {int(upper_value_string)-10} and {upper_value_string} minutes"
                     list_of_arryIndepVarObjects_dict.append(arryIndepVarObjects_dict)
 
+    for indVarObj in list_of_arryIndepVarObjects_dict:
+        if indVarObj.get('correlationValue') != 'insufficient data':
+            logger_apple.info(f"********* WHat is in hERE *********")
+            logger_apple.info(f"- in user_sleep_time_correlations for user_id: {list_of_arryIndepVarObjects_dict} ")
+            logger_apple.info(f"********* ********* *********")
+            return list_of_arryIndepVarObjects_dict
 
+    return []
 
-    return list_of_arryIndepVarObjects_dict
 
 def user_workouts_duration_correlations(user_id,user_tz_str):
     logger_apple.info("- in user_workouts_duration_correlations ")
@@ -125,7 +132,7 @@ def user_workouts_duration_correlations(user_id,user_tz_str):
                 correlation_value, obs_count = corr_sleep_heart_rate(df_qty_cat)# <--- this changes
                 arryIndepVarObjects_dict["correlationValue"]= correlation_value
                 arryIndepVarObjects_dict["correlationObservationCount"]= obs_count
-                arryIndepVarObjects_dict["definition"]= "The avearge of heart rates, from the prior day, recoreded across all your devices"
+                arryIndepVarObjects_dict["definition"]= "The avearge of heart rates, from the prior day, recorded across all your devices"
                 arryIndepVarObjects_dict["noun"]= "daily average heart rate"
                 list_of_arryIndepVarObjects_dict.append(arryIndepVarObjects_dict)
 

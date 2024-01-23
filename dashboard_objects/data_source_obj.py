@@ -9,13 +9,13 @@ def create_data_source_object_json_file(user_id):
 
     list_data_source_objects = []
 
-    #get user's oura record count
-    # keys to data_source_object_oura must match WSiOS DataSourceObject
-    data_source_object_oura={}
-    data_source_object_oura['name']="Oura Ring"
-    record_count_oura = sess.query(OuraSleepDescriptions).filter_by(user_id=int(user_id)).all()
-    data_source_object_oura['recordCount']="{:,}".format(len(record_count_oura))
-    list_data_source_objects.append(data_source_object_oura)
+    # #get user's oura record count
+    # # keys to data_source_object_oura must match WSiOS DataSourceObject
+    # data_source_object_oura={}
+    # data_source_object_oura['name']="Oura Ring"
+    # record_count_oura = sess.query(OuraSleepDescriptions).filter_by(user_id=int(user_id)).all()
+    # data_source_object_oura['recordCount']="{:,}".format(len(record_count_oura))
+    # list_data_source_objects.append(data_source_object_oura)
 
     #get user's apple health record count
     # keys to data_source_object_apple_health must match WSiOS DataSourceObject
