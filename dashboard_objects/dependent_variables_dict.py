@@ -9,9 +9,9 @@ def sleep_time():
 # def excercise_time():
 def workouts_duration():
     dashboard_table_object = {}
-    dashboard_table_object['dependentVarName']="Exercise Time"
+    dashboard_table_object['dependentVarName']="Workouts Duration"
     dashboard_table_object['sourceDataOfDepVar']="Apple Health Data"
     dashboard_table_object['arryIndepVarObjects']=[]
-    dashboard_table_object['definition']="The total minutes of daily exercise."
-    dashboard_table_object['verb']="exercise"
+    dashboard_table_object['definition']="The total minutes of workouts."
+    dashboard_table_object['verb']="work out"
     return dashboard_table_object
