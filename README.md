@@ -58,3 +58,8 @@ ExecStart=/home/nick/environments/ws11as/bin/python /home/nick/applications/What
 [Install]
 WantedBy=multi-user.target
 ```
+
+### More notes
+No correlations are calculated in Apple Service. This is solely to add data to the database and create unadulterated dataframes that reflect user data so that we lessen the strain on the database by making it easier to pull raw user data from pickle files.
+
+For correlation calculations see What Sticks 11 Analysis Package (ws_analysis).

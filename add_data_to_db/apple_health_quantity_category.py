@@ -37,7 +37,9 @@ def make_df_existing_user_apple_quantity_category(user_id,pickle_apple_qty_cat_p
             logger_apple.info(f"An error occurred: {e}")
             return None
 
-
+# Note #
+## pickle_data_path_and_name is path and name of file stored for use instead of pulling from db every time.
+## df_existing_user_data is likely pickle_data_path_and_name and will be replace with a new df after this func (add_apple...)
 def add_apple_health_to_database(user_id, apple_json_data_filename, df_existing_user_data, pickle_data_path_and_name):
     logger_apple.info(f"- accessed add_apple_health_to_database for user_id: {user_id} -")
     user_id = int(user_id)

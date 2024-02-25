@@ -41,7 +41,7 @@ def db_diagnostics():
 
 def what_sticks_health_service(user_id, time_stamp_str, add_qty_cat_bool, add_workouts_bool):
 
-    logger_apple.info(f"- accessed What Sticks 10 Apple Service (WSAS) -")
+    logger_apple.info(f"- accessed What Sticks 11 Apple Service (WSAS) -")
     logger_apple.info(f"- ******************************************* -")
     logger_apple.info(f"-- add_qty_cat_bool: {add_qty_cat_bool} -")
     logger_apple.info(f"-- add_workouts_bool: {add_workouts_bool} -")

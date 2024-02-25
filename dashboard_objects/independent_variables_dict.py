@@ -6,10 +6,11 @@ from common.config_and_logger import config, logger_apple
 import os
 import numpy as np
 
-def user_sleep_time_correlations(user_id, timezone_str):
+def user_sleep_time_correlations(user_id):
     logger_apple.info(f"- in user_sleep_time_correlations for user_id: {user_id} ")
 
-    df_qty_cat, sampleTypeListQtyCat = create_user_qty_cat_df(user_id=user_id,user_tz_str=timezone_str)
+    # df_qty_cat, sampleTypeListQtyCat = create_user_qty_cat_df(user_id=user_id,user_tz_str=timezone_str)
+    df_qty_cat, sampleTypeListQtyCat = create_user_qty_cat_df(user_id=user_id)
     if sampleTypeListQtyCat != "insufficient data":
         list_of_arryIndepVarObjects_dict = []
         if 'HKCategoryTypeIdentifierSleepAnalysis' in sampleTypeListQtyCat:
@@ -39,7 +40,8 @@ def user_sleep_time_correlations(user_id, timezone_str):
                 list_of_arryIndepVarObjects_dict.append(arryIndepVarObjects_dict)
 
         # check if user has workouts
-        df_workouts, sampleTypeListWorkouts = create_user_workouts_df(user_id,user_tz_str=timezone_str)
+        # df_workouts, sampleTypeListWorkouts = create_user_workouts_df(user_id,user_tz_str=timezone_str)
+        df_workouts, sampleTypeListWorkouts = create_user_workouts_df(user_id)
         if sampleTypeListWorkouts != "insufficient data":
             # Workouts 
             arryIndepVarObjects_dict = {}
@@ -89,10 +91,13 @@ def user_sleep_time_correlations(user_id, timezone_str):
     return []
 
 
-def user_workouts_duration_correlations(user_id,user_tz_str):
+# def user_workouts_duration_correlations(user_id,user_tz_str):
+def user_workouts_duration_correlations(user_id):
     logger_apple.info("- in user_workouts_duration_correlations ")
-    df_qty_cat, sampleTypeListQtyCat = create_user_qty_cat_df(user_id=user_id,user_tz_str=user_tz_str)
-    df_workouts, sampleTypeListWorkouts = create_user_workouts_df(user_id,user_tz_str=user_tz_str)
+    # df_qty_cat, sampleTypeListQtyCat = create_user_qty_cat_df(user_id=user_id,user_tz_str=user_tz_str)
+    df_qty_cat, sampleTypeListQtyCat = create_user_qty_cat_df(user_id=user_id)
+    # df_workouts, sampleTypeListWorkouts = create_user_workouts_df(user_id,user_tz_str=user_tz_str)
+    df_workouts, sampleTypeListWorkouts = create_user_workouts_df(user_id)
     if "insufficient data" not in [sampleTypeListQtyCat, sampleTypeListWorkouts]:
         df_daily_workouts = create_df_daily_workout_duration(df_workouts)
         if len(df_workouts) > 5:
