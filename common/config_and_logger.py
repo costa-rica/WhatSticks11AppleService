@@ -6,13 +6,13 @@ from logging.handlers import RotatingFileHandler
 match os.environ.get('FLASK_CONFIG_TYPE'):
     case 'dev':
         config = ConfigDev()
-        print('- WhatSticks10AppleService/config: Development')
+        print('- WhatSticks11AppleService/config: Development')
     case 'prod':
         config = ConfigProd()
-        print('- WhatSticks10AppleService/config: Production')
+        print('- WhatSticks11AppleService/config: Production')
     case _:
         config = ConfigLocal()
-        print('- WhatSticks10AppleService/config: Local')
+        print('- WhatSticks11AppleService/config: Local')
 
 #Setting up Logger
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(message)s')
