@@ -95,11 +95,12 @@ def create_dashboard_table_object_json_file(user_id):
 
 
     # keys to indep_var_object must match WSiOS IndepVarObject
-    list_of_dictIndepVarObjects = user_sleep_time_correlations(user_id = user_id,timezone_str=timezone_str)# new
-    logger_apple.info(f"****** SLEEP TIME ************")
+    # list_of_dictIndepVarObjects = user_sleep_time_correlations(user_id = user_id,timezone_str=timezone_str)
+    list_of_dictIndepVarObjects = user_sleep_time_correlations(user_id = user_id)# new
+    logger_apple.info(f"* SLEEP TIME  Dashboard Objs *")
     logger_apple.info(f"- {list_of_dictIndepVarObjects} -")
     
-    if len(list_of_dictIndepVarObjects) > 0:# This is useless remove <------ *** REMOVE
+    if len(list_of_dictIndepVarObjects) > 0:# FIX: NEED TO GIVE TEH opportuity to return 0
         
         # keys to dashboard_table_object must match WSiOS DashboardTableObject
         dashboard_table_object = sleep_time()
@@ -129,8 +130,9 @@ def create_dashboard_table_object_json_file(user_id):
 
 
     # keys to indep_var_object must match WSiOS IndepVarObject
-    list_of_dictIndepVarObjects = user_workouts_duration_correlations(user_id,timezone_str)# new
-    if len(list_of_dictIndepVarObjects) > 0:# This is useless remove <------ *** REMOVE
+    # list_of_dictIndepVarObjects = user_workouts_duration_correlations(user_id,timezone_str)
+    list_of_dictIndepVarObjects = user_workouts_duration_correlations(user_id)# new
+    if len(list_of_dictIndepVarObjects) > 0:# FIX: NEED TO GIVE TEH opportuity to return 0
         # keys to dashboard_table_object must match WSiOS DashboardTableObject
         dashboard_table_object = workouts_duration()
         arry_indep_var_objects = []

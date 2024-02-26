@@ -81,14 +81,15 @@ def user_sleep_time_correlations(user_id):
                     arryIndepVarObjects_dict["noun"]= f"workouts between {int(upper_value_string)-10} and {upper_value_string} minutes"
                     list_of_arryIndepVarObjects_dict.append(arryIndepVarObjects_dict)
 
-    for indVarObj in list_of_arryIndepVarObjects_dict:
-        if indVarObj.get('correlationValue') != 'insufficient data':
-            logger_apple.info(f"********* WHat is in hERE *********")
-            logger_apple.info(f"- in user_sleep_time_correlations for user_id: {list_of_arryIndepVarObjects_dict} ")
-            logger_apple.info(f"********* ********* *********")
-            return list_of_arryIndepVarObjects_dict
-
-    return []
+    try:
+        for indVarObj in list_of_arryIndepVarObjects_dict:
+            if indVarObj.get('correlationValue') != 'insufficient data':
+                logger_apple.info(f"********* WHat is in hERE *********")
+                logger_apple.info(f"- in user_sleep_time_correlations for user_id: {list_of_arryIndepVarObjects_dict} ")
+                logger_apple.info(f"********* ********* *********")
+                return list_of_arryIndepVarObjects_dict
+    except:
+        return []
 
 
 # def user_workouts_duration_correlations(user_id,user_tz_str):
@@ -141,8 +142,11 @@ def user_workouts_duration_correlations(user_id):
                 arryIndepVarObjects_dict["noun"]= "daily average heart rate"
                 list_of_arryIndepVarObjects_dict.append(arryIndepVarObjects_dict)
 
-
-        return list_of_arryIndepVarObjects_dict
+        try:
+            return list_of_arryIndepVarObjects_dict
+        except:
+            return []
     else:
         logger_apple.info(f"- User_id {user_id} has no df_qty_cat or df_workouts")
+        return []
 
