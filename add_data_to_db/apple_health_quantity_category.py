@@ -22,14 +22,8 @@ def make_df_existing_user_apple_quantity_category(user_id,pickle_apple_qty_cat_p
         logger_apple.info(f"- reading Apple Health (Quantity and Category Type) from WSDB -")
 
         try:
-            # Define the query using a parameterized statement for safety
-            query = """
-            SELECT * 
-            FROM apple_health_quantity_category 
-            WHERE user_id = :user_id;
-            """
-            # Execute the query and create a DataFrame
-            df_existing_qty_cat = pd.read_sql_query(query, engine, params={'user_id': user_id})
+            query = sess.query(AppleHealthQuantityCategory).filter_by(user_id=user_id)
+            df_existing_qty_cat = pd.read_sql(query.statement, engine)
             logger_apple.info(f"- successfully created df from WSDB -")
             logger_apple.info(f"- Successfully created Apple Quantity and Category df from WSDB -")
             return df_existing_qty_cat

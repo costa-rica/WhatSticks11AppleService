@@ -18,14 +18,8 @@ def make_df_existing_user_apple_workouts(user_id,pickle_apple_workouts_path_and_
         logger_apple.info(f"- NO Apple Health Workouts pickle file found in: {pickle_apple_workouts_path_and_name} -")
         logger_apple.info(f"- reading Apple Workouts from WSDB into df -")
         try:
-            # Define the query using a parameterized statement for safety
-            query = """
-            SELECT * 
-            FROM apple_health_workout 
-            WHERE user_id = :user_id;
-            """
-            # Execute the query and create a DataFrame
-            df_existing_workouts = pd.read_sql_query(query, engine, params={'user_id': user_id})
+            query = sess.query(AppleHealthWorkout).filter_by(user_id=user_id)
+            df_existing_workouts = pd.read_sql(query.statement, engine)
             logger_apple.info(f"- Successfully created Apple Workouts df from WSDB -")
             return df_existing_workouts
         except SQLAlchemyError as e:
