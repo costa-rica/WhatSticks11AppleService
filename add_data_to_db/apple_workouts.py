@@ -1,6 +1,6 @@
 from sqlalchemy.exc import SQLAlchemyError
 import pandas as pd
-from ws_models import engine
+from ws_models import sess, engine, AppleHealthWorkout
 import os
 from datetime import datetime
 import sqlite3 
