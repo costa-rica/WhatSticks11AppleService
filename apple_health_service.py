@@ -1,6 +1,6 @@
 import os
 import json
-from ws_models import session, engine, OuraSleepDescriptions, \
+from ws_models import session_scope, engine, OuraSleepDescriptions, \
     AppleHealthQuantityCategory, AppleHealthWorkout, Users
 from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
