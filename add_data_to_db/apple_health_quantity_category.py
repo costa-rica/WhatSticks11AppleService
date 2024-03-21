@@ -1,6 +1,6 @@
 from sqlalchemy.exc import SQLAlchemyError
 import pandas as pd
-from ws_models import sess, engine, AppleHealthQuantityCategory
+from ws_models import session_scope, engine, AppleHealthQuantityCategory
 import os
 from datetime import datetime
 import numpy as np
@@ -22,8 +22,9 @@ def make_df_existing_user_apple_quantity_category(user_id,pickle_apple_qty_cat_p
         logger_apple.info(f"- reading Apple Health (Quantity and Category Type) from WSDB -")
 
         try:
-            query = sess.query(AppleHealthQuantityCategory).filter_by(user_id=user_id)
-            df_existing_qty_cat = pd.read_sql(query.statement, engine)
+            with session_scope() as session:
+                query = session.query(AppleHealthQuantityCategory).filter_by(user_id=user_id)
+                df_existing_qty_cat = pd.read_sql(query.statement, engine)
             logger_apple.info(f"- successfully created df from WSDB -")
             logger_apple.info(f"- Successfully created Apple Quantity and Category df from WSDB -")
             return df_existing_qty_cat

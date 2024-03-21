@@ -1,6 +1,6 @@
 from sqlalchemy.exc import SQLAlchemyError
 import pandas as pd
-from ws_models import sess, engine, AppleHealthWorkout
+from ws_models import session_scope, engine, AppleHealthWorkout
 import os
 from datetime import datetime
 import sqlite3 
@@ -18,8 +18,9 @@ def make_df_existing_user_apple_workouts(user_id,pickle_apple_workouts_path_and_
         logger_apple.info(f"- NO Apple Health Workouts pickle file found in: {pickle_apple_workouts_path_and_name} -")
         logger_apple.info(f"- reading Apple Workouts from WSDB into df -")
         try:
-            query = sess.query(AppleHealthWorkout).filter_by(user_id=user_id)
-            df_existing_workouts = pd.read_sql(query.statement, engine)
+            with session_scope() as session:
+                query = session.query(AppleHealthWorkout).filter_by(user_id=user_id)
+                df_existing_workouts = pd.read_sql(query.statement, engine)
             logger_apple.info(f"- Successfully created Apple Workouts df from WSDB -")
             return df_existing_workouts
         except SQLAlchemyError as e:
