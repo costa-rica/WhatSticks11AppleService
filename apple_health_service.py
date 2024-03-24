@@ -203,7 +203,7 @@ def call_api_notify_completion(user_id,count_of_records_added_to_db):
 
 # Main WSAS function
 if __name__ == "__main__":
-    if os.environ.get('FLASK_CONFIG_TYPE') != 'local':
+    if os.environ.get('FLASK_CONFIG_TYPE') != 'workstation':
         # Instead of directly calling what_sticks_health_service,
         # we add the job to the queue
         add_job_to_queue(argv[1], argv[2], argv[3], argv[4])
