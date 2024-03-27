@@ -52,7 +52,7 @@ After=network.target
 [Service]
 User=nick
 Environment=PATH=/home/nick/environments/ws11as/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-Environment="FLASK_CONFIG_TYPE=prod"
+Environment="WS_CONFIG_TYPE=prod"
 ExecStart=/home/nick/environments/ws11as/bin/python /home/nick/applications/WhatSticks11AppleService/worker_script.py --serve-in-foreground
 
 [Install]
