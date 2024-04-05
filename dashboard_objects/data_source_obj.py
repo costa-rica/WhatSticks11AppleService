@@ -1,5 +1,6 @@
 import os
-from ws_models import sess, OuraSleepDescriptions
+# from ws_models import sess, OuraSleepDescriptions
+from ws_models import DatabaseSession, OuraSleepDescriptions
 import pandas as pd
 import json
 from common.config_and_logger import config, logger_apple

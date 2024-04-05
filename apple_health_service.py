@@ -1,6 +1,8 @@
 import os
 import json
-from ws_models import sess, engine, OuraSleepDescriptions, \
+# from ws_models import sess, engine, OuraSleepDescriptions, \
+    # AppleHealthQuantityCategory, AppleHealthWorkout, Users
+from ws_models import engine, DatabaseSession, OuraSleepDescriptions, \
     AppleHealthQuantityCategory, AppleHealthWorkout, Users
 from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
@@ -8,7 +10,7 @@ from sys import argv
 import pandas as pd
 import requests
 from common.config_and_logger import config, logger_apple
-from common.utilities import apple_health_qty_cat_json_filename, \
+from common.utilities import wrap_up_session, apple_health_qty_cat_json_filename, \
     apple_health_workouts_json_filename, create_pickle_apple_qty_cat_path_and_name, \
     create_pickle_apple_workouts_path_and_name
 from dashboard_objects.data_source_obj import create_data_source_object_json_file
@@ -34,10 +36,12 @@ def test_func_01(test_string):
     # add_to_apple_health_quantity_category_table(logger_apple, test_string)
 
 def db_diagnostics():
+    db_session = DatabaseSession()
     workout_db_all = sess.query(AppleHealthWorkout).all()
     qty_cat_db_all = sess.query(AppleHealthQuantityCategory).all()
     logger_apple.info(f"- AppleHealthWorkout record count: {len(workout_db_all)} -")
     logger_apple.info(f"- AppleHealthQuantityCategory record count: {len(qty_cat_db_all)} -")
+    wrap_up_session(db_session)
 
 def what_sticks_health_service(user_id, time_stamp_str, add_qty_cat_bool, add_workouts_bool):
 
@@ -88,7 +92,7 @@ def what_sticks_health_service(user_id, time_stamp_str, add_qty_cat_bool, add_wo
 
 def create_dashboard_table_object_json_file(user_id):
     logger_apple.info(f"- WSAS creating dashboard file for user: {user_id} -")
-    timezone_str = sess.get(Users,int(user_id)).timezone
+    # timezone_str = sess.get(Users,int(user_id)).timezone
     array_dashboard_table_object = []
 
     ############# CREATE sleep_time dashbaord object ############################
@@ -108,7 +112,11 @@ def create_dashboard_table_object_json_file(user_id):
 
         for dictIndepVarObjects in list_of_dictIndepVarObjects:
             if dictIndepVarObjects.get('correlationValue') != "insufficient data":
-                logger_apple.info(f"- {dictIndepVarObjects.get('name')} (indep var) correlation with {dictIndepVarObjects.get('depVarName')} (dep var): {dictIndepVarObjects.get('correlationValue')} -")
+                long_f_string = (
+                    f"- {dictIndepVarObjects.get('name')} (indep var) correlation with" +
+                    f" {dictIndepVarObjects.get('depVarName')} (dep var): {dictIndepVarObjects.get('correlationValue')} -"
+                )
+                logger_apple.info(long_f_string)
                 arry_indep_var_objects.append(dictIndepVarObjects)
 
         # Sorting (biggest to smallest) the list by the absolute value of correlationValue
