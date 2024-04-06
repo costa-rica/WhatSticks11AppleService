@@ -112,7 +112,7 @@ def add_apple_workouts_to_database(user_id,apple_workouts_filename,df_existing_u
 
     ### create pickle file  "user_0001_apple_workouts_dataframe.pkl"
     df_updated_user_apple_health.to_pickle(pickle_apple_workouts_data_path_and_name)
-    logger_apple.info("** right before error **")
+    # logger_apple.info("** right before error **")
 
 
     count_of_user_apple_health_records = len(df_new_user_workout_data)

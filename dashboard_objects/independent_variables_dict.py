@@ -14,6 +14,7 @@ def user_sleep_time_correlations(user_id):
     if sampleTypeListQtyCat != "insufficient data":
         list_of_arryIndepVarObjects_dict = []
         if 'HKCategoryTypeIdentifierSleepAnalysis' in sampleTypeListQtyCat:
+            logger_apple.info(f"- There are Sleep Analysis rows")
             arryIndepVarObjects_dict = {}
             # Steps
             if 'HKQuantityTypeIdentifierStepCount' in sampleTypeListQtyCat:
@@ -39,6 +40,8 @@ def user_sleep_time_correlations(user_id):
                 arryIndepVarObjects_dict["noun"]= "daily average heart rate"
                 list_of_arryIndepVarObjects_dict.append(arryIndepVarObjects_dict)
 
+        else:
+            logger_apple.info(f"- There are NO Sleep Analysis rows !!!! -")
         # check if user has workouts
         # df_workouts, sampleTypeListWorkouts = create_user_workouts_df(user_id,user_tz_str=timezone_str)
         df_workouts, sampleTypeListWorkouts = create_user_workouts_df(user_id)
@@ -81,6 +84,8 @@ def user_sleep_time_correlations(user_id):
                     arryIndepVarObjects_dict["noun"]= f"workouts between {int(upper_value_string)-10} and {upper_value_string} minutes"
                     list_of_arryIndepVarObjects_dict.append(arryIndepVarObjects_dict)
 
+        else:
+            logger_apple.info(f"- There are NO Workout rows !!!! -")
     try:
         for indVarObj in list_of_arryIndepVarObjects_dict:
             if indVarObj.get('correlationValue') != 'insufficient data':

@@ -30,7 +30,6 @@ import time
 job_queue = queue.Queue(maxsize=5)  # Conservative queue size
 num_worker_threads = 2  # Conservative number of worker threads
 
-
 def test_func_01(test_string):
     logger_apple.info(f"- {test_string} -")
     # add_to_apple_health_quantity_category_table(logger_apple, test_string)
@@ -91,7 +90,7 @@ def what_sticks_health_service(user_id, time_stamp_str, add_qty_cat_bool, add_wo
     logger_apple.info(f"- what_sticks_health_service Completed -")
 
 def create_dashboard_table_object_json_file(user_id):
-    logger_apple.info(f"- WSAS creating dashboard file for user: {user_id} -")
+    logger_apple.info(f"- [WSAS creating dashboard file] for user: {user_id} -")
     # timezone_str = sess.get(Users,int(user_id)).timezone
     array_dashboard_table_object = []
 
@@ -101,8 +100,11 @@ def create_dashboard_table_object_json_file(user_id):
     # keys to indep_var_object must match WSiOS IndepVarObject
     # list_of_dictIndepVarObjects = user_sleep_time_correlations(user_id = user_id,timezone_str=timezone_str)
     list_of_dictIndepVarObjects = user_sleep_time_correlations(user_id = user_id)# new
-    logger_apple.info(f"* SLEEP TIME  Dashboard Objs *")
+    logger_apple.info(f"* [WSAS creating dashboard file] SLEEP TIME  Dashboard Objs *")
+    logger_apple.info(f"- List of Independent Variables (list_of_dictIndepVarObjects)  -")
     logger_apple.info(f"- {list_of_dictIndepVarObjects} -")
+    logger_apple.info(f"- ^^^^ SEE what is in list_of_dictIndepVarObjects above ^^^^ -")
+
     
     if len(list_of_dictIndepVarObjects) > 0:# FIX: NEED TO GIVE TEH opportuity to return 0
         
