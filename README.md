@@ -63,3 +63,9 @@ WantedBy=multi-user.target
 No correlations are calculated in Apple Service. This is solely to add data to the database and create unadulterated dataframes that reflect user data so that we lessen the strain on the database by making it easier to pull raw user data from pickle files.
 
 For correlation calculations see What Sticks 11 Analysis Package (ws_analysis).
+
+## Documentation
+
+The conduit for adding data from Apple Health iOS is the what_sticks_health_service() function. This function will check for duplicates and remove before adding.
+- The method for checking for duplicates is keeping a .pkl dataframe file of Apple Health data (by user) that mirrors the database and the app uses that to check for duplicates.
+ - This means that any data (dated older or newer) will be added as long as a row in new in terms of 'sampleType', 'startDate', 'endDate', and 'UUID'. 

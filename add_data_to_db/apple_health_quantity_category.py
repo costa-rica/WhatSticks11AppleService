@@ -7,10 +7,6 @@ import numpy as np
 from common.config_and_logger import config, logger_apple
 from common.utilities import wrap_up_session
 
-# def test_func_02(test_string):
-#     logger_apple.info(f"- inside apple_health_quantity_category.add_to_apple_health_quantity_category_table -")
-#     logger_apple.info(f"- {test_string} -")
-
 
 def make_df_existing_user_apple_quantity_category(user_id,pickle_apple_qty_cat_path_and_name):
 
