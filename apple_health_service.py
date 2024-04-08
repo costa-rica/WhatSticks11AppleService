@@ -115,8 +115,8 @@ def create_dashboard_table_object_json_file(user_id):
         for dictIndepVarObjects in list_of_dictIndepVarObjects:
             if dictIndepVarObjects.get('correlationValue') != "insufficient data":
                 long_f_string = (
-                    f"- {dictIndepVarObjects.get('name')} (indep var) correlation with" +
-                    f" {dictIndepVarObjects.get('depVarName')} (dep var): {dictIndepVarObjects.get('correlationValue')} -"
+                    f"- {dictIndepVarObjects.get('independentVarName')} (indep var) correlation with" +
+                    f" {dictIndepVarObjects.get('forDepVarName')} (dep var): {dictIndepVarObjects.get('correlationValue')} -"
                 )
                 logger_apple.info(long_f_string)
                 arry_indep_var_objects.append(dictIndepVarObjects)
@@ -150,7 +150,11 @@ def create_dashboard_table_object_json_file(user_id):
         if list_of_dictIndepVarObjects != None:
             for dictIndepVarObjects in list_of_dictIndepVarObjects:
                 if dictIndepVarObjects.get('correlationValue') != "insufficient data":
-                    logger_apple.info(f"- {dictIndepVarObjects.get('name')} (indep var) correlation with {dictIndepVarObjects.get('depVarName')} (dep var): {dictIndepVarObjects.get('correlationValue')} -")
+                    long_f_string = (
+                        f"- {dictIndepVarObjects.get('independentVarName')} (indep var) correlation with" +
+                        f" {dictIndepVarObjects.get('forDepVarName')} (dep var): {dictIndepVarObjects.get('correlationValue')} -"
+                    )
+                    logger_apple.info(long_f_string)
                     arry_indep_var_objects.append(dictIndepVarObjects)
 
 
