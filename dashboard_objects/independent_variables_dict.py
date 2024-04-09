@@ -38,7 +38,7 @@ def user_sleep_time_correlations(user_id):
         if isinstance(obs_count, int):
         # if 'HKQuantityTypeIdentifierHeartRate' in sampleTypeListQtyCat:
             arryIndepVarObjects_dict = {}
-            arryIndepVarObjects_dict["independentVarName"]= "Heart Rate Avg"
+            arryIndepVarObjects_dict["independentVarName"]= "Heart Rate"
             arryIndepVarObjects_dict["forDepVarName"]= "Sleep Time"
             # correlation_value, obs_count = corr_sleep_heart_rate(df_qty_cat)
             arryIndepVarObjects_dict["correlationValue"]= correlation_value
@@ -60,7 +60,7 @@ def user_sleep_time_correlations(user_id):
             correlation_value, obs_count = corr_sleep_workouts(df_qty_cat, df_workouts)
             if isinstance(obs_count, int):
                 arryIndepVarObjects_dict = {}
-                arryIndepVarObjects_dict["independentVarName"]= "Avg Daily Workout Duration"
+                arryIndepVarObjects_dict["independentVarName"]= "Workout Duration"
                 arryIndepVarObjects_dict["forDepVarName"]= "Sleep Time"
                 # correlation_value, obs_count = corr_sleep_workouts(df_qty_cat, df_workouts)
                 arryIndepVarObjects_dict["correlationValue"]= correlation_value
@@ -174,7 +174,7 @@ def user_workouts_duration_correlations(user_id):
             # if 'HKQuantityTypeIdentifierHeartRate' in sampleTypeListQtyCat:
             if isinstance(obs_count, int):
                 arryIndepVarObjects_dict = {}
-                arryIndepVarObjects_dict["independentVarName"]= "Heart Rate Avg"
+                arryIndepVarObjects_dict["independentVarName"]= "Heart Rate"
                 arryIndepVarObjects_dict["forDepVarName"]= "Workout Duration"
                 # correlation_value, obs_count = corr_sleep_heart_rate(df_qty_cat)
                 # correlation_value, obs_count = corr_sleep_heart_rate(df_qty_cat)# <--- this changes
