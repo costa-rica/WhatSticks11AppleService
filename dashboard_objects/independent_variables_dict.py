@@ -20,9 +20,10 @@ def user_sleep_time_correlations(user_id):
         logger_apple.info(f"- There are Sleep Analysis rows")
         arryIndepVarObjects_dict = {}
         # Steps
+        # if 'HKQuantityTypeIdentifierStepCount' in sampleTypeListQtyCat:
         correlation_value, obs_count = corr_sleep_steps(df_qty_cat)
         if isinstance(obs_count, int):
-        # if 'HKQuantityTypeIdentifierStepCount' in sampleTypeListQtyCat:
+
             arryIndepVarObjects_dict["independentVarName"]= "Step Count"
             arryIndepVarObjects_dict["forDepVarName"]= "Sleep Time"
             # correlation_value, obs_count = corr_sleep_steps(df_qty_cat)
@@ -34,9 +35,10 @@ def user_sleep_time_correlations(user_id):
             flag_data_for_dashboard_exisits=True
 
         # Heart Rate
+        # if 'HKQuantityTypeIdentifierHeartRate' in sampleTypeListQtyCat:
         correlation_value, obs_count = corr_sleep_heart_rate(df_qty_cat)
         if isinstance(obs_count, int):
-        # if 'HKQuantityTypeIdentifierHeartRate' in sampleTypeListQtyCat:
+
             arryIndepVarObjects_dict = {}
             arryIndepVarObjects_dict["independentVarName"]= "Heart Rate"
             arryIndepVarObjects_dict["forDepVarName"]= "Sleep Time"
@@ -104,6 +106,7 @@ def user_sleep_time_correlations(user_id):
 
         # Cloudiness
         correlation_value, obs_count = corr_sleep_cloudiness(df_qty_cat)
+        logger_apple.info(f"- correlation_value, obs_count: {correlation_value}, {obs_count} -")
         if isinstance(obs_count, int):
             arryIndepVarObjects_dict = {}
             arryIndepVarObjects_dict["independentVarName"]= "Cloud Cover"
