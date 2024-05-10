@@ -94,13 +94,13 @@ def add_apple_workouts_to_database(user_id,apple_workouts_filename,df_existing_u
     rename_dict['sourceVersion_x']='sourceVersion'
     # rename_dict['quantity_x']='quantity'
     df_unique_new_user_data.rename(columns=rename_dict, inplace=True)
-
+    count_of_records_added_to_db = 0
     try:
         ### add df to database
         count_of_records_added_to_db = df_unique_new_user_data.to_sql('apple_health_workout', con=engine, if_exists='append', index=False)
     except Exception as e:
-        logger_apple.info(f"failed to add df to database")
-        logger_apple.info(f"{type(e).__name__}: {e}")
+        logger_apple.error(f"failed to add df_workouts to database")
+        logger_apple.error(f"{type(e).__name__}: {e}")
     # except sqlite3.IntegrityError as e:
     #     logger_apple.info(f"An integrity error occurred: {e}")
 
