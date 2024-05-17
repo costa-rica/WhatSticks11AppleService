@@ -33,8 +33,6 @@ def make_df_existing_user_apple_workouts(user_id,pickle_apple_workouts_path_and_
 def add_apple_workouts_to_database(user_id,apple_workouts_filename,df_existing_user_workouts_data,pickle_apple_workouts_data_path_and_name):
 
     logger_apple.info(f"- accessed add_apple_workouts_to_database -")
-    # print(f"- df_existing_user_workouts_data dtypes: {df_existing_user_workouts_data.dtypes} - ")
-    # print(f"- df_existing_user_workouts_data len: {df_existing_user_workouts_data} - ")
 
     #create new apple_workout df
     with open(os.path.join(config.APPLE_HEALTH_DIR, apple_workouts_filename), 'r') as new_user_data_path_and_filename:
@@ -51,9 +49,6 @@ def add_apple_workouts_to_database(user_id,apple_workouts_filename,df_existing_u
     df_existing_user_workouts_data['sampleType'] = df_existing_user_workouts_data['sampleType'].astype(str)
     df_existing_user_workouts_data['duration'] = df_existing_user_workouts_data['duration'].astype(str)
     df_existing_user_workouts_data['duration'] = df_existing_user_workouts_data['duration'].astype(str)
-
-    # logger_apple.info(f"- df_new_user_workout_data.dtypes: {df_new_user_workout_data.dtypes}")
-    # logger_apple.info(f"- df_existing_user_workouts_data.dtypes: {df_existing_user_workouts_data.dtypes}")
 
     # Perform the merge on specific columns
     df_merged = pd.merge(df_new_user_workout_data, df_existing_user_workouts_data, 
@@ -116,5 +111,4 @@ def add_apple_workouts_to_database(user_id,apple_workouts_filename,df_existing_u
     count_of_user_apple_health_records = len(df_new_user_workout_data)
     logger_apple.info(f"- count of Apple Health Workout records in db: {count_of_user_apple_health_records}")
     logger_apple.info(f"--- add_apple_workouts_to_database COMPLETE ---")
-
     return count_of_records_added_to_db
